@@ -15,7 +15,7 @@ document.getElementById("estimateButton").addEventListener("click", async () => 
             document.getElementById("result").innerText = "🔍 Estimating value...";
 
             try {
-                const apiResponse = await fetch("http://127.0.0.1:8000/estimate", {
+                const apiResponse = await fetch("marketmileage-production.up.railway.app", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
