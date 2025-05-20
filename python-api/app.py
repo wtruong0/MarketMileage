@@ -1,13 +1,21 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 import httpx
 import os
 from dotenv import load_dotenv
 
-# Load environment variables from .env file
+# load environment variables from .env file
 load_dotenv()
 
 app = FastAPI()
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 # OpenRouter API key
 API_KEY = os.getenv("API_KEY")
 
