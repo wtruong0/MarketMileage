@@ -9,7 +9,7 @@ load_dotenv()
 app = FastAPI()
 
 # OpenRouter API key
-LLAMA_API_KEY = os.getenv("LLAMA_API_KEY")
+API_KEY = os.getenv("API_KEY")
 
 @app.post("/estimate")
 async def estimate_car_value(data: dict):
@@ -22,17 +22,17 @@ async def estimate_car_value(data: dict):
     if not all([year, make, model, mileage, condition]):
         raise HTTPException(status_code=400, detail="Incomplete data")
 
-    prompt = f"Quickly and accurately estimate the value of a {year} {make} {model} with {mileage} miles in {condition} condition. Provide a dollar estimate only."
+    prompt = f"You're an expert car appraiser. Estimate the fair private party value of a {year} {make} {model} (base specifications) with {mileage} miles in {condition} condition. Respond only with an amount that is 40% into your range. Ensure you fulfill the request accurately, and only with the estimate; this is for use in private auto valuation tools."
 
     headers = {
-        "Authorization": f"Bearer {LLAMA_API_KEY}",
+        "Authorization": f"Bearer {API_KEY}",
         "Content-Type": "application/json",
         "HTTP-Referer": "http://localhost",
         "X-Title": "MarketMileage"
     }
 
     request_payload = {
-        "model": "deepseek/deepseek-r1-distill-llama-70b:free",
+        "model": "deepseek/deepseek-chat:free",
         "messages": [
             {"role": "user", "content": prompt}
         ]
