@@ -19,6 +19,14 @@
 </head>
 <body>
     <h2>MarketMileage</h2>
+    <label for="condition">Select Condition:</label>
+    <select id="condition" name="condition">
+        <option value="fair">Fair</option>
+        <option value="good" selected>Good (default)</option>
+        <option value="very good">Very Good</option>
+        <option value="excellent">Excellent</option>
+    </select>
+    <br><br>
     <button id="estimateButton">Estimate Value</button> <!-- button triggers the scraping and estimation process -->
     <p id="result"></p> <!-- display the estimated value -->
 
