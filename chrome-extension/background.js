@@ -4,7 +4,7 @@ chrome.runtime.onInstalled.addListener(() => {
       {
         conditions: [
           new chrome.declarativeContent.PageStateMatcher({
-            pageUrl: { hostContains: "facebook.com", pathContains: "marketplace" }
+            pageUrl: { hostEquals: "www.facebook.com", pathPrefix: "/marketplace/item/" }
           })
         ],
         actions: [new chrome.declarativeContent.ShowAction()]
@@ -15,7 +15,7 @@ chrome.runtime.onInstalled.addListener(() => {
 
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   if (
-    tab.url?.includes("facebook.com/marketplace") &&
+    tab.url?.includes("facebook.com/marketplace/item/") &&
     changeInfo.status === "complete"
   ) {
     chrome.scripting.executeScript({
