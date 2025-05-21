@@ -28,7 +28,7 @@ async def estimate_car_value(data: dict):
     if any(val in [None, "", "unknown", "Unknown"] for val in [ymm, mileage]):
         raise HTTPException(status_code=400, detail="Scraped data is incomplete or invalid.")
 
-    prompt = f"You're an expert car appraiser. Estimate the fair private party value of a {ymm} (lean towards base specifications pricing) with {mileage} miles in {condition} condition. Respond only with an amount that is 35% into your range. Ensure you fulfill the request accurately, and respond only with the estimate; this is for use in private auto valuation tools."
+    prompt = f"You're an expert car appraiser. Estimate the fair private party value of a {ymm} (lean towards base specifications pricing) with {mileage} miles in {condition} condition. Respond only with an amount that is 40% into your range. Ensure you fulfill the request accurately, and respond only with the estimate; this is for use in private auto valuation tools."
 
     headers = {
         "Authorization": f"Bearer {API_KEY}",
