@@ -1,35 +1,61 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>MarketMileage</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            padding: 10px;
-        }
-        #estimateButton {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            text-align: center;
-            cursor: pointer;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <title>MarketMileage</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', 'Segoe UI', 'Helvetica Neue', sans-serif;
+      font-size: 14px;
+      padding: 16px;
+      width: 240px;
+      background: linear-gradient(to bottom, #ebedee, #ffffff);
+      border-radius: 12px;
+      border: 1px solid #e2e2e2;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16);
+      color: #111;
+    }
+
+    body:hover {
+      box-shadow: 0 3px 12px rgba(0, 0, 0, 0.12);
+      transition: box-shadow 0.2s ease;
+    }
+
+    strong {
+      font-weight: 600;
+      font-size: 15px;
+    }
+
+    hr {
+      border: none;
+      border-top: 1px solid #e2e2e2;
+      margin: 12px 0;
+    }
+
+    a {
+      color: #1877F2;
+      text-decoration: none;
+      display: block;
+      margin-top: 8px;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+
+    a:hover {
+      transform: translateX(4px);
+      opacity: 0.85;
+    }
+  </style>
 </head>
 <body>
-    <h2>MarketMileage</h2>
-    <label for="condition">Select Condition:</label>
-    <select id="condition" name="condition">
-        <option value="fair">Fair</option>
-        <option value="good" selected>Good (default)</option>
-        <option value="very good">Very Good</option>
-        <option value="excellent">Excellent</option>
-    </select>
-    <br><br>
-    <button id="estimateButton">Estimate Value</button> <!-- button triggers the scraping and estimation process -->
-    <p id="result"></p> <!-- display the estimated value -->
+  <strong>MarketMileage</strong> [+AI]<br>
+  by William Truong
+  <p class="description">
+    Estimate fair car pricings on Facebook Marketplace listings with a few clicks.
+  </p>
+  <hr>
 
-    <script src="popup.js"></script>
+  <a href="https://github.com/wtruong0/MarketMileage" target="_blank">🔗 View on GitHub</a>
+  <a href="https://www.linkedin.com/in/truongw" target="_blank">➡️ Find me on LinkedIn</a>
 </body>
 </html>
