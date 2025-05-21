@@ -1,25 +1,16 @@
 // content.js
 function scrapeListingData() {
-    let year = "Unknown";
-    let make = "Unknown";
-    let model = "Unknown";
-    let mileage = "Unknown";
 
+    let mileage = "Unknown";
+    let ymm = "Unknown";
     // title scraping
     const titleElement = document.querySelector('[data-testid="marketplace-item-title"]');
-    const title = titleElement?.innerText?.trim() || "";
+    const title = titleElement?.innerText?.trim();
 
     if (title) {
-        const tokens = title.split(" ");
-        const yearRegex = /^(19|20)\d{2}$/;
-
-        if (tokens.length >= 3 && yearRegex.test(tokens[0])) {
-            year = tokens[0];
-            make = tokens[1];
-            model = tokens[2];
-        }
+    ymm = title;
     }
-
+    
     // mileage scraping
     const possibleMileageElements = Array.from(document.querySelectorAll("span, div"))
         .filter(el => el.innerText?.toLowerCase().includes("mile"));
@@ -33,9 +24,9 @@ function scrapeListingData() {
     }
 
     // debug logging
-    console.log("Scraped listing data:", { year, make, model, mileage });
+    console.log("Scraped listing data:", { ymm, mileage });
 
-    return { year, make, model, mileage };
+    return { ymm, mileage };
 }
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {

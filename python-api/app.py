@@ -21,16 +21,14 @@ API_KEY = os.getenv("API_KEY")
 
 @app.post("/estimate")
 async def estimate_car_value(data: dict):
-    year = data.get("year")
-    make = data.get("make")
-    model = data.get("model")
+    ymm = data.get("ymm")
     mileage = data.get("mileage")
     condition = data.get("condition")
 
-    if any(val in [None, "", "unknown", "Unknown"] for val in [year, make, model, mileage]):
+    if any(val in [None, "", "unknown", "Unknown"] for val in [ymm, mileage]):
         raise HTTPException(status_code=400, detail="Scraped data is incomplete or invalid.")
 
-    prompt = f"You're an expert car appraiser. Estimate the fair private party value of a {year} {make} {model} (base specifications) with {mileage} miles in {condition} condition. Respond only with an amount that is 40% into your range. Ensure you fulfill the request accurately, and only with the estimate; this is for use in private auto valuation tools."
+    prompt = f"You're an expert car appraiser. Estimate the fair private party value of a {ymm} (assume base specifications if none already given) with {mileage} miles in {condition} condition. Respond only with an amount that is 40% into your range. Ensure you fulfill the request accurately, and only with the estimate; this is for use in private auto valuation tools."
 
     headers = {
         "Authorization": f"Bearer {API_KEY}",
@@ -47,19 +45,16 @@ async def estimate_car_value(data: dict):
     }
 
     try:
+        print("Prompt sent to model:", prompt)
+        print("Request payload:", request_payload)
         async with httpx.AsyncClient() as client:
-            print("Prompt sent to model:")
-            print(prompt)
-            print("Request payload:")
-            print(request_payload)
             response = await client.post(
                 "https://openrouter.ai/api/v1/chat/completions",
                 json=request_payload,
                 headers=headers,
                 timeout=20
             )
-            print("📥 Response from model:")
-            print(response.text)
+        print("📥 Response from model:", response.text)
 
         if response.status_code == 200:
             completion = response.json()

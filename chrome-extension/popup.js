@@ -3,16 +3,21 @@ document.getElementById("estimateButton").addEventListener("click", async () => 
     // send message to content.js to scrape data
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
         chrome.tabs.sendMessage(tabs[0].id, { action: "scrapeData" }, async (response) => {
-            if (!response || Object.values(response).includes("Unknown")) {
-                document.getElementById("result").innerText = "❌ Incomplete listing — scraping failed. Please check the page.";
+            if (chrome.runtime.lastError || !response || Object.values(response).includes("Unknown")) {
+                console.warn("Failed to scrape:", response);
+                document.getElementById("result").innerText = "Incomplete listing — scraping failed. Please check the page.";
                 return;
             }
 
             // get user input condition
             const userCondition = document.getElementById("condition").value;
-            response.condition = userCondition;
+            const apiBody = {
+                ymm: response.ymm,
+                mileage: response.mileage,
+                condition: userCondition
+            };
 
-            document.getElementById("result").innerText = "🔍 Estimating value...";
+            document.getElementById("result").innerText = "Estimating value...";
 
             try {
                 const apiResponse = await fetch("https://marketmileage-production.up.railway.app/estimate", {
