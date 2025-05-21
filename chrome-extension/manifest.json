@@ -1,12 +1,16 @@
 {
     "manifest_version": 3,
     "name": "MarketMileage",
-    "description": "Allows you to estimate a fair value for cars on Facebook Marketplace with AI oversight using a DeepSeek API.",
-    "version": "1.0",
+    "description": "Swiftly estimate fair car pricings on Facebook Marketplace using a DeepSeek API, all embedded on the listing page.",
+    "version": "2.1",
+    "background": {
+        "service_worker": "background.js"
+    },
     "permissions": [
         "activeTab",
         "scripting",
-        "storage"
+        "storage",
+        "declarativeContent"
     ],
     "host_permissions": [
         "https://www.facebook.com/marketplace/*"
@@ -18,12 +22,5 @@
             "48": "icon48.png",
             "128": "icon128.png"
         }
-    },
-    "content_scripts": [
-        {
-            "matches": ["*://*.facebook.com/marketplace/*", "*://*.facebook.com/*/marketplace/*"],
-            "js": ["content.js"],
-            "run_at": "document_end"
-        }
-    ]
+    }
 }
