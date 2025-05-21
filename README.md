@@ -15,7 +15,7 @@
 
 ## 🛠 How to Install
 
-![Download instructions](assets/tutorial.png)
+![Download instructions](.git/tutorial.png)
 1. **Download this repository** (I suggest following the image above).
 2. Open Chrome and navigate to [`chrome://extensions`](chrome://extensions).
 3. **Enable Developer Mode** (toggle bar in the top right).
