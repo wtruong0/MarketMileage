@@ -28,7 +28,7 @@ async def estimate_car_value(data: dict):
     if any(val in [None, "", "unknown", "Unknown"] for val in [ymm, mileage]):
         raise HTTPException(status_code=400, detail="Scraped data is incomplete or invalid.")
 
-    prompt = f"You're an expert car appraiser. Estimate the fair private party value of a {ymm} (assume base specifications if none already given) with {mileage} miles in {condition} condition. Respond only with an amount that is 40% into your range. Ensure you fulfill the request accurately, and only with the estimate; this is for use in private auto valuation tools."
+    prompt = f"You're an expert car appraiser. Estimate the fair private party value of a {ymm} (lean towards base specifications pricing) with {mileage} miles in {condition} condition. Respond only with an amount that is 35% into your range. Ensure you fulfill the request accurately, and respond only with the estimate; this is for use in private auto valuation tools."
 
     headers = {
         "Authorization": f"Bearer {API_KEY}",
@@ -38,7 +38,7 @@ async def estimate_car_value(data: dict):
     }
 
     request_payload = {
-        "model": "deepseek/deepseek-chat:free",
+        "model": "deepseek-ai/DeepSeek-V3",
         "messages": [
             {"role": "user", "content": prompt}
         ]
@@ -49,7 +49,7 @@ async def estimate_car_value(data: dict):
         print("Request payload:", request_payload)
         async with httpx.AsyncClient() as client:
             response = await client.post(
-                "https://openrouter.ai/api/v1/chat/completions",
+                "https://llm.chutes.ai/v1/chat/completions",
                 json=request_payload,
                 headers=headers,
                 timeout=20
