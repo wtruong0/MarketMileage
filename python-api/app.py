@@ -48,12 +48,18 @@ async def estimate_car_value(data: dict):
 
     try:
         async with httpx.AsyncClient() as client:
+            print("Prompt sent to model:")
+            print(prompt)
+            print("Request payload:")
+            print(request_payload)
             response = await client.post(
                 "https://openrouter.ai/api/v1/chat/completions",
                 json=request_payload,
                 headers=headers,
                 timeout=20
             )
+            print("📥 Response from model:")
+            print(response.text)
 
         if response.status_code == 200:
             completion = response.json()
