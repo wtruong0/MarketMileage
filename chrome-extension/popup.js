@@ -3,8 +3,8 @@ document.getElementById("estimateButton").addEventListener("click", async () => 
     // send message to content.js to scrape data
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
         chrome.tabs.sendMessage(tabs[0].id, { action: "scrapeData" }, async (response) => {
-            if (!response) {
-                document.getElementById("result").innerText = "❌ Failed to scrape data.";
+            if (!response || Object.values(response).includes("Unknown")) {
+                document.getElementById("result").innerText = "❌ Incomplete listing — scraping failed. Please check the page.";
                 return;
             }
 
@@ -15,7 +15,7 @@ document.getElementById("estimateButton").addEventListener("click", async () => 
             document.getElementById("result").innerText = "🔍 Estimating value...";
 
             try {
-                const apiResponse = await fetch("marketmileage-production.up.railway.app", {
+                const apiResponse = await fetch("https://marketmileage-production.up.railway.app/estimate", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
@@ -30,11 +30,11 @@ document.getElementById("estimateButton").addEventListener("click", async () => 
 
                 const result = await apiResponse.json();
                 document.getElementById("result").innerText =
-                    `✅ Estimated Value: ${result.estimated_value}`;
+                    `Estimated Value: ${result.estimated_value}`;
             } catch (err) {
                 console.error(err);
                 document.getElementById("result").innerText =
-                    "❌ Error contacting valuation server.";
+                    "Error contacting valuation server. Maybe try again?";
             }
         });
     });

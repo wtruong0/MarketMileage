@@ -27,8 +27,8 @@ async def estimate_car_value(data: dict):
     mileage = data.get("mileage")
     condition = data.get("condition")
 
-    if not all([year, make, model, mileage, condition]):
-        raise HTTPException(status_code=400, detail="Incomplete data")
+    if any(val in [None, "", "unknown", "Unknown"] for val in [year, make, model, mileage]):
+        raise HTTPException(status_code=400, detail="Scraped data is incomplete or invalid.")
 
     prompt = f"You're an expert car appraiser. Estimate the fair private party value of a {year} {make} {model} (base specifications) with {mileage} miles in {condition} condition. Respond only with an amount that is 40% into your range. Ensure you fulfill the request accurately, and only with the estimate; this is for use in private auto valuation tools."
 
