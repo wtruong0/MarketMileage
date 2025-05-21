@@ -52,7 +52,6 @@ function injectEstimateButton() {
     const btn = document.createElement("button");
     btn.id = "marketmileage-btn";
     btn.innerText = "Estimate with AI 🤖";
-    btn.style.marginLeft = "10px";
     btn.style.padding = "4px 8px";
     btn.style.background = "#1877F2";
     btn.style.color = "white";
@@ -64,9 +63,9 @@ function injectEstimateButton() {
 
     const resultBox = document.createElement("div");
     resultBox.id = "marketmileage-result";
-    resultBox.style.marginTop = "10px";
+    resultBox.style.marginTop = "6px";
     resultBox.style.fontWeight = "bold";
-    resultBox.style.fontFamily = "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji', sans-serif";
+    resultBox.style.fontFamily = btn.style.fontFamily
 
     btn.onclick = async () => {
         const listingPrice = getListingPrice();
@@ -78,6 +77,7 @@ function injectEstimateButton() {
         }
 
         try {
+            resultBox.style.color = "gray";
             resultBox.innerText = "🔄 Estimating...";
             const response = await fetch("https://marketmileage-production.up.railway.app/estimate", {
                 method: "POST",
@@ -95,17 +95,28 @@ function injectEstimateButton() {
             }
             const estimated = parseInt(result.estimated_value.replace(/[^0-9]/g, ""));
             if (estimated < 500 || estimated > 150000) {
-                resultBox.innerText = "⚠️ Suspicious estimate";
+                resultBox.innerText = "😵‍💫 Suspicious estimate, try again";
                 resultBox.style.color = "gray";
                 return;
             }
-            const diff = listingPrice - estimated;
-            const ratio = diff / estimated;
 
-            resultBox.innerText = `AI Estimate: $${estimated.toLocaleString()}`;
-            resultBox.style.color =
-                ratio < -0.1 ? "green" :
-                ratio > 0.1 ? "red" : "orange";
+            const ratio = (listingPrice - estimated) / estimated;
+            console.log(`📉 Listing: $${listingPrice}, Estimate: $${estimated}, Ratio: ${ratio}`);
+            let color, label;
+
+            if (ratio < -0.10) {
+                color = "green";
+                label = "🟢 Good Value!";
+            } else if (ratio > 0.10) {
+                color = "red";
+                label = "🔴 Poor Value...";
+            } else {
+                color = "gray";
+                label = "🟡 Fair Price";
+            }
+            resultBox.innerText = `AI Estimate: $${estimated.toLocaleString()} | ${label}`;
+            resultBox.style.color = color;
+
         } catch (e) {
             console.error("Estimation failed", e);
             resultBox.innerText = "⚠️ Failed to estimate.";
@@ -113,8 +124,37 @@ function injectEstimateButton() {
         }
     };
 
-    priceEl.insertAdjacentElement("afterend", btn);
-    btn.insertAdjacentElement("afterend", resultBox);
+    const container = document.createElement("div");
+    container.style.display = "flex";
+    container.style.justifyContent = "flex-start";
+    container.style.alignItems = "flex-start";
+    container.style.gap = "14px";
+    container.style.marginTop = "6px";
+
+    const rightBox = document.createElement("div");
+    rightBox.style.display = "flex";
+    rightBox.style.flexDirection = "column";
+    rightBox.style.alignItems = "flex-end";
+
+    btn.style.padding = "4px 8px";
+    btn.style.background = "#1877F2";
+    btn.style.color = "white";
+    btn.style.border = "none";
+    btn.style.borderRadius = "4px";
+    btn.style.cursor = "pointer";
+    btn.style.fontSize = "12px";
+    btn.style.fontFamily = "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji', sans-serif";
+
+    resultBox.style.marginTop = "4px";
+    resultBox.style.fontWeight = "bold";
+    resultBox.style.fontFamily = btn.style.fontFamily;
+    resultBox.style.textAlign = "right";
+
+    priceEl.parentElement.insertBefore(container, priceEl);
+    container.appendChild(priceEl);
+    container.appendChild(rightBox);
+    rightBox.appendChild(btn);
+    rightBox.appendChild(resultBox);
     console.log("injectEstimateButton() ran");
 }
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
