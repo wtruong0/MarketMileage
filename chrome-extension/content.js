@@ -34,6 +34,21 @@ if (window.hasRunMarketMileage) {
         console.log("Scraped listing data:", { ymm, mileage }); //debug logging
         return { ymm, mileage };
     }
+    function detectListingContainer() {
+        const popup = document.querySelector('div[role="dialog"][aria-label="Marketplace Listing Viewer"]');
+        if (popup) return popup;
+
+        const fullPageTitle = document.querySelector('h1');
+        if (fullPageTitle) {
+            let container = fullPageTitle.parentElement;
+            while (container && container.tagName !== 'MAIN') {
+                container = container.parentElement;
+            }
+            return container || document.querySelector('div[role="main"]');
+        }
+
+        return null;
+    }
 
     function injectEstimateButton(root) {
         const priceEl = Array.from(root.querySelectorAll('span[dir="auto"]'))
@@ -181,6 +196,7 @@ if (window.hasRunMarketMileage) {
             const condition = conditionSelect.value;
             try {
                 resultBox.style.color = "#3b3b3a";
+                resultBox.style.background = "#d4d4d4"
                 resultBox.innerText = "🔄 Estimating...";
                 const response = await fetch("https://marketmileage-production.up.railway.app/estimate", {
                     method: "POST",
@@ -248,44 +264,39 @@ if (window.hasRunMarketMileage) {
         }
         return true;
     });
-    function waitForListingPopup(timeout = 5000) {
-    return new Promise((resolve, reject) => {
-        const start = Date.now();
-        const check = () => {
-            const root = document.querySelector('div[role="dialog"][aria-label="Marketplace Listing Viewer"]');
-            if (root) {
-                console.log("✅ Found listing popup container:", root);
-                resolve(root);
-            } else if (Date.now() - start > timeout) {
-                reject("❌ Popup container not found in time");
-            } else {
-                setTimeout(check, 300);
+
+    function observeListings() {
+        const observer = new MutationObserver(() => {
+            const container = detectListingContainer();
+            if (container && !container.querySelector("#marketmileage-btn")) {
+                injectEstimateButton(container);
             }
-        };
-        check();
-    });
-}
+        });
+
+        observer.observe(document.body, { childList: true, subtree: true });
+    }
+
+    function waitForInitialInjection() {
+        const root = detectListingContainer();
+        if (root && !root.querySelector("#marketmileage-btn")) {
+            injectEstimateButton(root);
+        }
+    }
 
     if (!window.hasOwnProperty("__marketmileage_injected")) {
         window.__marketmileage_injected = true;
+
+        waitForInitialInjection();
+        observeListings();
+
         setInterval(() => {
             if (location.href !== currentUrl) {
                 currentUrl = location.href;
                 setTimeout(() => {
-                    waitForListingPopup()
-                        .then(injectEstimateButton)
-                        .catch(console.warn);
+                    waitForInitialInjection();
                 }, 1000);
             }
         }, 1000);
-
-        waitForListingPopup()
-            .then(root => {
-                injectEstimateButton
-            })
-            .catch(err => {
-                console.warn("Failed to find Facebook listing popup:", err);
-            });
 
         console.log("content.js properly initialized in individual listing");
     }
