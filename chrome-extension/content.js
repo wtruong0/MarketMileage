@@ -172,12 +172,88 @@ if (window.hasRunMarketMileage) {
                 100% { transform: scale(1); opacity: 1; }
             }
             .pulse {
-                animation: pulse 0.5s ease-in-out;
+                animation: pulse 0.6s ease-in-out;
+            }
+            @keyframes sparkleMove {
+                0% {
+                    transform: translate(0, 0);
+                    opacity: 1;
+                }
+                100% {
+                    transform: translate(var(--distance)) rotate(var(--angle));
+                    opacity: 0;
+                }
             }
         `;
         document.head.appendChild(style);
 
         btn.onclick = async () => {
+            function createSparkles(button) {
+                const rect = button.getBoundingClientRect();
+                const sparkleContainer = document.createElement("div");
+                sparkleContainer.style.position = "fixed";
+                sparkleContainer.style.left = `${rect.left}px`;
+                sparkleContainer.style.top = `${rect.top}px`;
+                sparkleContainer.style.width = `${rect.width}px`;
+                sparkleContainer.style.height = `${rect.height}px`;
+                sparkleContainer.style.pointerEvents = "none";
+                sparkleContainer.style.zIndex = "9999";
+
+                for (let i = 0; i < 8; i++) {
+                    const sparkle = document.createElement("div");
+                    sparkle.style.position = "absolute";
+                    sparkle.style.width = "6px";
+                    sparkle.style.height = "6px";
+                    sparkle.style.background = "#1877F2";
+                    sparkle.style.borderRadius = "50%";
+                    sparkle.style.opacity = "0.9";
+
+                    // random position along button edges
+                    const edge = Math.floor(Math.random() * 4);
+                    let x = 0, y = 0;
+                    switch (edge) {
+                        case 0: // top
+                            x = Math.random() * rect.width;
+                            y = 0;
+                            break;
+                        case 1: // right
+                            x = rect.width;
+                            y = Math.random() * rect.height;
+                            break;
+                        case 2: // bottom
+                            x = Math.random() * rect.width;
+                            y = rect.height;
+                            break;
+                        case 3: // left
+                            x = 0;
+                            y = Math.random() * rect.height;
+                            break;
+                    }
+                    sparkle.style.left = `${x}px`;
+                    sparkle.style.top = `${y}px`;
+
+                    // random radian direction
+                    const angle = Math.random() * 2 * Math.PI;
+                    const distance = 20 + Math.random() * 20;
+                    const dx = Math.cos(angle) * distance;
+                    const dy = Math.sin(angle) * distance;
+
+                    sparkle.animate([
+                        { transform: 'translate(0, 0)', opacity: 0.9 },
+                        { transform: `translate(${dx}px, ${dy}px)`, opacity: 0 }
+                    ], {
+                        duration: 600,
+                        easing: "ease-out",
+                        fill: "forwards"
+                    });
+
+                    sparkleContainer.appendChild(sparkle);
+                }
+
+                document.body.appendChild(sparkleContainer);
+                setTimeout(() => sparkleContainer.remove(), 700);
+            }
+            createSparkles(btn);
             const priceText = priceEl?.innerText.trim();
             let listingPrice = null;
 
@@ -223,12 +299,12 @@ if (window.hasRunMarketMileage) {
                 console.log(`📉 Listing: $${listingPrice}, Estimate: $${estimated}, Ratio: ${ratio}`);
                 let color, label, background;
 
-                if (ratio <= -0.10) {
+                if (ratio <= -0.05) {
                     color = "#2ac92a";
                     label = "🟢 Good! ";
                     background = "#dcfae3";
                     resultBox.style.animation = "pulse 1.5s ease-out";
-                } else if (ratio >= 0.10) {
+                } else if (ratio >= 0.05) {
                     color = "#ff3b3b";
                     label = "🔴 Poor ";
                     background = "#eddada";
@@ -239,8 +315,10 @@ if (window.hasRunMarketMileage) {
                     background = "#bdbdbd";
                 }
 
-                resultBox.classList.remove("pulse"); // new pulse trigger
-                void resultBox.offsetWidth;
+                resultBox.classList.remove("pulse");
+                resultBox.style.animation = "none";
+                resultBox.offsetHeight; // trigger style/layout reflow
+                resultBox.style.animation = null;
                 resultBox.classList.add("pulse");
 
                 resultBox.style.background = background;
