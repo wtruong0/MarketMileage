@@ -39,7 +39,7 @@ It:
 - Chrome Extensions platform (Manifest v3)
 - JavaScript Document Object Module (DOM) injection
 - Python FastAPI backend
-  - Server-side hosting through Railway
+  - Server-side hosting through Google Cloud Run
 - DeepSeek AI model via Chutes.ai API integration
 
 ---

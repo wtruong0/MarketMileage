@@ -274,7 +274,7 @@ if (window.hasRunMarketMileage) {
                 resultBox.style.color = "#3b3b3a";
                 resultBox.style.background = "#d4d4d4"
                 resultBox.innerText = "🔄 Estimating...";
-                const response = await fetch("https://marketmileage-production.up.railway.app/estimate", {
+                const response = await fetch("https://marketmileage-api-q5qqauwdsa-uc.a.run.app/estimate", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ ymm, mileage, condition })
