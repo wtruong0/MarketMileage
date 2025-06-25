@@ -3,10 +3,8 @@ import requests
 url = "http://127.0.0.1:8000/estimate"
 
 car_data = {
-    "year": "2018",
-    "make": "Honda",
-    "model": "Civic",
-    "mileage": "50000",
+    "ymm": "2020 Toyota Camry",
+    "mileage": "71364",
     "condition": "good"
 }
 
