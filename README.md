@@ -23,6 +23,9 @@
 6. Navigate to any **Facebook Marketplace** car listing.
 7. Click **"Estimate with AI 🤖"** next to the price — and enjoy using MarketMileage!
 
+
+[**Click here for a Full Tutorial**](https://youtu.be/cY7Afdfjq6U)
+
 ---
 
 ## 📷 How It Works
