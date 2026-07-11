@@ -1,13 +1,13 @@
 # MarketMileage 🔍🚗
 
-**MarketMileage** is a lightweight Chrome extension that uses DeepSeek V3 to estimate fair private-party car values within Facebook Marketplace listings.
+**MarketMileage** is a lightweight Chrome extension that uses Gemini 3.5 Flash to estimate fair private-party car values within Facebook Marketplace listings.
 
 ---
 
 ## 🚀 Features
 - ✅ Automatically scrapes listing details (YMM, mileage, listing price)
 - 🧠 Condition dropdown for user-defined tuning
-- 🤖 Uses a DeepSeek API to provide fast price estimations
+- 🤖 Uses a Gemini API to provide fast price estimations
 - 🟢 Color-coded labels: Valued as [Good / Fair / Poor]
 - 📍 Embedded UI: No popup required, an inline overlay
 
@@ -43,7 +43,7 @@ It:
 - JavaScript Document Object Module (DOM) injection
 - Python FastAPI backend
   - Server-side hosting through Google Cloud Run
-- DeepSeek AI model via Chutes.ai API integration
+- Gemini Flash 3.5 Model integration
 
 ---
 
@@ -54,5 +54,6 @@ It:
 ---
 
 ## ✍️ Credits
-Created by **Will Truong**  
+Created by **Will Truong**
+Feel free to notify me by email at willtruong0@gmail.com if you find new issues. As of 7/11/2026, I had to revive the project through lots of trial and error with new backend hosts and model providers. The current Gemini model is ~2 seconds slower, but is quite accurate in my testing so far.
 Licensed under MIT
