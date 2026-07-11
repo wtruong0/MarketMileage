@@ -274,17 +274,32 @@ if (window.hasRunMarketMileage) {
                 resultBox.style.color = "#3b3b3a";
                 resultBox.style.background = "#d4d4d4"
                 resultBox.innerText = "🔄 Estimating...";
-                const response = await fetch("https://marketmileage-api-q5qqauwdsa-uc.a.run.app/estimate", {
+                const response = await fetch("https://marketmileage-api-315778620618.us-central1.run.app/estimate", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ ymm, mileage, condition })
                 });
 
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({ detail: "Unknown error" }));
+                    console.error("API error:", response.status, errorData);
+                    resultBox.innerText = `⚠️ API error: ${errorData.detail || response.status}`;
+                    resultBox.style.color = "gray";
+                    return;
+                }
+
                 const result = await response.json();
+
+                if (!result.estimated_value) {
+                    console.error("Invalid API response:", result);
+                    resultBox.innerText = "⚠️ Invalid estimate response";
+                    resultBox.style.color = "gray";
+                    return;
+                }
 
                 const match = result.estimated_value.match(/\$?(\d{1,3}(?:,\d{3})*)/);
                 if (!match || !match[1]) {
-                    resultBox.innerText = "⚠️ Invalid estimate";
+                    resultBox.innerText = "⚠️ Invalid estimate format";
                     resultBox.style.color = "gray";
                     return;
                 }

@@ -1,8 +1,8 @@
 {
     "manifest_version": 3,
     "name": "MarketMileage",
-    "description": "Swiftly estimate fair car pricings on Facebook Marketplace using a DeepSeek API, all embedded on the listing page.",
-    "version": "3.2",
+    "description": "Swiftly estimate fair car pricings on Facebook Marketplace using a Gemini API, all embedded on the listing page.",
+    "version": "3.2.0",
     "background": {
         "service_worker": "background.js"
     },
