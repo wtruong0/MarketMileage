@@ -54,6 +54,6 @@ It:
 ---
 
 ## ✍️ Credits
-Created by **Will Truong**
-Feel free to notify me by email at willtruong0@gmail.com if you find new issues. As of 7/11/2026, I had to revive the project through lots of trial and error with new backend hosts and model providers. The current Gemini model is ~2 seconds slower, but is quite accurate in my testing so far.
+Created by **Will Truong**    
+Feel free to notify me by email at willtruong0@gmail.com if you find new issues. As of 7/11/2026, I had to revive the project through lots of trial and error with new backend hosts and model providers. The current Gemini model is ~2 seconds slower, but is quite accurate in my testing so far.    
 Licensed under MIT
