@@ -8,14 +8,14 @@
 - ✅ Automatically scrapes listing details (YMM, mileage, listing price)
 - 🧠 Condition dropdown for user-defined tuning
 - 🤖 Uses a Gemini API to provide fast price estimations
-- 🟢 Color-coded labels: Valued as [Good / Fair / Poor]
+- 🟢 Color-coded valuation labels: Valued as [Good / Fair / Poor]
 - 📍 Embedded UI: No popup required, an inline overlay
 
 ---
 
 ## 🛠 How to Install & Use
 
-1. [Download the extension folder](https://drive.google.com/uc?export=download&id=1UEzqDddQZyFUYpp_xOmvHxI3qTnWD-4N).
+1. [Download the extension folder](https://drive.google.com/uc?export=download&id=1Al4XMYfvO2R8g-sxWP0bTKoAwkquvpPr).
 2. Extract the **chrome-extension** folder from inside **MarketMileage.zip** that you just downloaded.
 3. Open Chrome and navigate to`chrome://extensions`, or find the Extensions page in settings.
 4. Enable **Developer Mode** (via toggle bar in the top right).
